@@ -43,7 +43,7 @@ alertmanager:
         - name: 'slack-notifications'
           slack_configs:
             - api_url: '$(SLACK_WEBHOOK_URL)'
-              channel: '#all-harbey'
+              channel: '#channel'
               send_resolved: true
       templates:
       - '{{ .Values.CommonAnnotations.summary | default "Default summary" }}'
