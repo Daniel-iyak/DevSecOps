@@ -25,7 +25,7 @@ hpa:
 resourceQuota:
   teamA:
     requests:
-      cpu: "2"  # Lower the request to match the resource usage in AWS
+      cpu: "2"  
       memory: "4Gi"
     limits:
       cpu: "4"
@@ -51,4 +51,4 @@ externalDNS:
     - service
     - ingress
   domainFilters:
-    - domainname.com  # Replace with your actual domain
+    - domainname.com  

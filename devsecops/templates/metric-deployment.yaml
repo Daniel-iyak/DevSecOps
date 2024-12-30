@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: python-metrics-app
-          image: python:3.11-slim  # Using Python slim image
+          image: python:3.11-slim 
           ports:
             - containerPort: 5000  # Expose port 5000 for Prometheus scraping
           command:
@@ -39,13 +39,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: python-metrics-app
-  namespace: monitoring  # Service in the monitoring namespace
+  namespace: monitoring  
 spec:
   selector:
     app: python-metrics-app
   ports:
     - protocol: TCP
-      port: 80
+      port: 5000
       targetPort: 5000  # Make the metrics accessible
   type: LoadBalancer
       
