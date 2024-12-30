@@ -16,9 +16,9 @@ service:
 
 hpa:
   name: python-dev-environment-hpa
-  namespace: default  # Use the appropriate namespace
+  namespace: default  
   minReplicas: 1
-  maxReplicas: 5  # Adjust based on expected load
+  maxReplicas: 5  
   cpuUtilization: 50  # Scale up when CPU usage exceeds 50%
   memoryUtilization: 80  # Scale up when memory usage exceeds 80%
 

@@ -19,7 +19,7 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/hostname: my-service.domainname.com  # External DNS integration
 spec:
-  type: LoadBalancer  # Expose the service via AWS Load Balancer (ELB)
+  type: LoadBalancer  #
   ports:
     - port: 80        # External port on the Load Balancer
       targetPort: 8080 # Internal port on the pod

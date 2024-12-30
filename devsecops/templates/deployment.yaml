@@ -19,14 +19,14 @@ spec:
         image: "{{ .Values.baseImage }}"  # Dynamic base image from values.yaml
         resources:
           requests:
-            memory: "{{ .Values.resources.requests.memory }}"  # Memory request from values.yaml
-            cpu: "{{ .Values.resources.requests.cpu }}"  # CPU request from values.yaml
+            memory: "{{ .Values.resources.requests.memory }}"  
+            cpu: "{{ .Values.resources.requests.cpu }}"  
           limits:
-            memory: "{{ .Values.resources.limits.memory }}"  # Memory limit from values.yaml
-            cpu: "{{ .Values.resources.limits.cpu }}"  # CPU limit from values.yaml
+            memory: "{{ .Values.resources.limits.memory }}"  
+            cpu: "{{ .Values.resources.limits.cpu }}"  
         env:
           - name: PACKAGES
-            value: "{{ .Values.packages }}"  # Dynamic package list from values.yaml
+            value: "{{ .Values.packages }}"  
         command:
           - "/bin/sh"
           - "-c"
