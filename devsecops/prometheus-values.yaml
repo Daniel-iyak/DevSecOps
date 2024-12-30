@@ -1,0 +1,50 @@
+prometheus:
+  prometheusSpec:
+    # Default scrape configuration for Kubernetes metrics
+    additionalScrapeConfigs: 
+      - job_name: 'python-metrics-app'
+        static_configs:
+          - targets: ['python-metrics-app.monitoring.svc.cluster.local:5000'] 
+
+    # Alert rule for low CPU usage for `python-dev-environment` pods
+    additionalPrometheusRules:
+      - groups:
+          - name: simple-alerts
+            rules:
+              - alert: LowCPUUsage
+                expr: avg(rate(container_cpu_usage_seconds_total{pod=~"python-dev-environment.*"}[1m])) < 0.01
+                labels:
+                  severity: warning
+                annotations:
+                  summary: "CPU usage is under 1% for the last 1 minute."
+                  description: "The CPU usage of the python-dev-environment pods is low."
+
+
+
+
+alertmanager:
+  alertmanagerSpec:
+    containers:
+      - name: alertmanager
+        env:
+          - name: SLACK_WEBHOOK_URL
+            valueFrom:
+              secretKeyRef:
+                name: slack-webhook-url  # Kubernetes secret name
+                key: SLACK_WEBHOOK_URL    # Key inside the secret
+
+    alertmanagerConfig:
+      global:
+        resolve_timeout: 5m
+      route:
+        group_by: ['alertname']
+        receiver: 'slack-notifications'
+      receivers:
+        - name: 'slack-notifications'
+          slack_configs:
+            - api_url: '$(SLACK_WEBHOOK_URL)'
+              channel: '#all-harbey'
+              send_resolved: true
+      templates:
+      - '{{ .Values.CommonAnnotations.summary | default "Default summary" }}'
+      - '{{ .Values.CommonAnnotations.description | default "Default description" }}'

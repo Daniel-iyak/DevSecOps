@@ -1,0 +1,25 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Values.hpa.name }}  # Reference to HPA name from values.yaml
+  namespace: {{ .Values.hpa.namespace }}  # Reference to namespace from values.yaml
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: python-dev-environment  # Name of the deployment to scale
+  minReplicas: {{ .Values.hpa.minReplicas }}  # Reference to minReplicas from values.yaml
+  maxReplicas: {{ .Values.hpa.maxReplicas }}  # Reference to maxReplicas from values.yaml
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.hpa.cpuUtilization }}  # Reference to CPU utilization from values.yaml
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.hpa.memoryUtilization }}  # Reference to memory utilization from values.yaml

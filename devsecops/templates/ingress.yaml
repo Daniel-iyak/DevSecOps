@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: domainname.com  # The DNS record that will be created by ExternalDNS
+spec:
+  rules:
+    - host: domainname.com  # This is the DNS name you want to route traffic to
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: my-service  # The name of the service you want to expose
+                port:
+                  number: 80      # The port on which your service is running

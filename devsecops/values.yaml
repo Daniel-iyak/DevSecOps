@@ -1,0 +1,54 @@
+baseImage: "python:3.11-slim"
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "250m"
+  limits:
+    memory: "1Gi"
+    cpu: "500m"
+
+packages: "numpy,pandas"
+
+service:
+  port: 5000
+  targetPort: 5000
+  type: ClusterIP
+
+hpa:
+  name: python-dev-environment-hpa
+  namespace: default  # Use the appropriate namespace
+  minReplicas: 1
+  maxReplicas: 10  # Adjust based on expected load
+  cpuUtilization: 50  # Scale up when CPU usage exceeds 50%
+  memoryUtilization: 80  # Scale up when memory usage exceeds 80%
+
+resourceQuota:
+  teamA:
+    requests:
+      cpu: "2"  # Lower the request to match the resource usage in AWS
+      memory: "4Gi"
+    limits:
+      cpu: "4"
+      memory: "8Gi"
+    pods: "8"
+  
+  teamB:
+    requests:
+      cpu: "2"  # Similar adjustment for team B
+      memory: "4Gi"
+    limits:
+      cpu: "4"
+      memory: "8Gi"
+    pods: "8"
+
+externalDNS:
+  provider: aws
+  aws:
+    region: us-east-1
+    policy: upsert-only  # Use 'upsert-only' to avoid deleting records
+    zoneType: public  # Ensure it uses public Route 53 hosted zones
+  sources:
+    - service
+    - ingress
+  domainFilters:
+    - domainname.com  # Replace with your actual domain

@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-metrics-app
+  namespace: monitoring  # Deploying in the monitoring namespace
+spec:
+  replicas: 1  # One replica for the metric app
+  selector:
+    matchLabels:
+      app: python-metrics-app
+  template:
+    metadata:
+      labels:
+        app: python-metrics-app
+    spec:
+      containers:
+        - name: python-metrics-app
+          image: python:3.11-slim  # Using Python slim image
+          ports:
+            - containerPort: 5000  # Expose port 5000 for Prometheus scraping
+          command:
+            - "/bin/sh"
+            - "-c"
+            - |
+              # Start the metrics server in Python
+              pip install prometheus_client
+              python -c "
+              import time
+              from prometheus_client import start_http_server, Counter
+
+              REQUESTS = Counter('python_app_requests', 'Total number of requests')
+              start_http_server(5000)  # Exposes metrics on port 5000
+              while True:
+                  REQUESTS.inc()  # Increment the counter
+                  time.sleep(1)  # Simulate work
+              "
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-metrics-app
+  namespace: monitoring  # Service in the monitoring namespace
+spec:
+  selector:
+    app: python-metrics-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000  # Make the metrics accessible
+  type: LoadBalancer
+      
+

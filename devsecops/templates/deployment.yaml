@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-dev-environment
+  labels:
+    app: python-dev-environment
+spec:
+  replicas: 1  # This will be managed by the HPA
+  selector:
+    matchLabels:
+      app: python-dev-environment
+  template:
+    metadata:
+      labels:
+        app: python-dev-environment
+    spec:
+      containers:
+      - name: python-container
+        image: "{{ .Values.baseImage }}"  # Dynamic base image from values.yaml
+        resources:
+          requests:
+            memory: "{{ .Values.resources.requests.memory }}"  # Memory request from values.yaml
+            cpu: "{{ .Values.resources.requests.cpu }}"  # CPU request from values.yaml
+          limits:
+            memory: "{{ .Values.resources.limits.memory }}"  # Memory limit from values.yaml
+            cpu: "{{ .Values.resources.limits.cpu }}"  # CPU limit from values.yaml
+        env:
+          - name: PACKAGES
+            value: "{{ .Values.packages }}"  # Dynamic package list from values.yaml
+        command:
+          - "/bin/sh"
+          - "-c"
+          - |
+            # Upgrade pip and install packages dynamically from the environment variable
+            pip install --upgrade pip
+            pip install $(echo $PACKAGES | tr ',' ' ')
+
+            # Create a simple Python script dynamically
+            cat << EOF > /app.py
+            import time
+            while True:
+                print('Hello, World!')
+                time.sleep(5)
+            EOF
+
+            # Run the Python script
+            exec python3 /app.py
+
