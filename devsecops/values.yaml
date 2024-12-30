@@ -10,15 +10,15 @@ resources:
 packages: "numpy,pandas"
 
 service:
-  port: 5000
-  targetPort: 5000
+  port: 80
+  targetPort: 80
   type: ClusterIP
 
 hpa:
   name: python-dev-environment-hpa
   namespace: default  # Use the appropriate namespace
   minReplicas: 1
-  maxReplicas: 10  # Adjust based on expected load
+  maxReplicas: 5  # Adjust based on expected load
   cpuUtilization: 50  # Scale up when CPU usage exceeds 50%
   memoryUtilization: 80  # Scale up when memory usage exceeds 80%
 
