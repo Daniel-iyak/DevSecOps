@@ -28,7 +28,7 @@ Base Image Selection.
 Package Installation: Users could specify dependencies via values.yml.
 Resource Allocation: Specified CPU, memory, and GPU requests in the values.yml
 
-Monitoring and Scaling:
+**Monitoring and Scaling**
 Resource Monitoring: Deployed Prometheus and Horizontal Pod Autoscaler (HPA) to monitor CPU, memory utilization, and scale pods dynamically.
 Downscaling and Optimization: Implemented alerts for underutilized resources and auto-downscaling based on set thresholds.
 Tracking Usage: Saved data to track resource requests and usage for performance evaluation.
