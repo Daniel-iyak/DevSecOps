@@ -11,14 +11,17 @@ Uploaded the image to Docker Hub.
 Security Scan: Scanned the image for vulnerabilities (CVEs) and generated a report. CVEs were addressed by updating packages and using secure base images.
 Mitigating Risks: Implemented scanning for malicious packages and followed best practices like using signed images,and updating dependencies regularly.
 
-Kubernetes Deployment and Exposure
+**Kubernetes Deployment**
+
 Deployed the Docker image in a Kubernetes cluster 
 Exposed the deployed service via an external load balancer and made it accessible. 
 
-Automated CI/CD Pipeline
+**Automated CI/CD Pipeline**
+
 Integrated CI/CD pipeline in the repository, automating the entire process of building, testing, and deploying the containerized application.
 
-Development Environments for Employees
+**Development Environments for Employees**
+
 Provided a system for employees to launch customized development environments based on the following:
 
 Base Image Selection.
