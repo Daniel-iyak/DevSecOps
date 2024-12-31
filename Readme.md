@@ -1,11 +1,13 @@
 **Project Overview**
 
 **Container Image with Python and R**
+
 Built a Docker image containing both Python 2, Python 3, and R.
 Installed necessary dependencies via requirements.txt for Python packages.
 Uploaded the image to Docker Hub. 
 
-Improvements
+**Improvements**
+
 Security Scan: Scanned the image for vulnerabilities (CVEs) and generated a report. CVEs were addressed by updating packages and using secure base images.
 Mitigating Risks: Implemented scanning for malicious packages and followed best practices like using signed images,and updating dependencies regularly.
 
